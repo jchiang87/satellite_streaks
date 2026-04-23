@@ -1,7 +1,7 @@
 from .utils import object_type_config
-from .satelliteStreaks import SatelliteStreaksCollection
+from .satellite_streaks import SatelliteStreakCollection
 
-COLLECTION_CLASS_MAP = {"SatelliteStreaksCollection": SatelliteStreaksCollection}
+COLLECTION_CLASS_MAP = {"SatelliteStreakCollection": SatelliteStreakCollection}
 
 def register_objects(sky_catalog, object_type):
     config = object_type_config(sky_catalog, object_type)
