@@ -4,7 +4,7 @@ import pandas as pd
 import galsim
 from skycatalogs.objects import BaseObject, ObjectCollection
 from skycatalogs.utils import normalize_sed
-from star_grid.utils import object_type_config
+from .utils import object_type_config
 
 
 __all__ = ["SatelliteStreakCollection", "SatelliteStreakObject"]
