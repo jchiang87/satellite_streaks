@@ -1,0 +1,12 @@
+catalog_dir: .
+catalog_name: satellite_streaks
+object_types:
+  satellite_streaks:
+    area_partition: None
+    module: satellite_streaks
+    collection_class: SatelliteStreakCollection
+    catalog_file: satellite_streaks.parquet
+skycatalog_root: .
+provenance:
+  versioning:
+    schema_version: 1.3.0
