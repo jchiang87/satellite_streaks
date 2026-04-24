@@ -12,9 +12,9 @@ df0 = pd.DataFrame(
             "starSED/phoSimMLT/lte034-4.5-1.0a+0.4.BT-Settl.spec.gz",
             "starSED/phoSimMLT/lte034-4.5-1.0a+0.4.BT-Settl.spec.gz",
         ],
-        "length": [600., 600., 500., 2000.],
-        "width": [1e-6, 1e-6, 1e-6, 1e-6],
-        "position_angle": [0, 45, 60, 90],
+        "length": [600., 600., 500., 2000.],  # arcsec
+        "width": [1e-6, 1e-6, 1e-6, 1e-6],    # arcsec
+        "position_angle": [0, 45, 60, 90],    # degree
     }
 )
 df0.to_parquet("satellite_streaks.parquet")
