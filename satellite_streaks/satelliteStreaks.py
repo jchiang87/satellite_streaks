@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import pandas as pd
 import galsim
 from skycatalogs.objects import BaseObject, ObjectCollection
@@ -13,23 +12,23 @@ __all__ = ["SatelliteStreakCollection", "SatelliteStreakObject"]
 class SatelliteStreakObject(BaseObject):
     def __init__(self, params, parent_collection, index):
         super().__init__(params.ra, params.dec, params.obj_id,
-                         parent_collection._object_type,
+                         parent_collection._object_type_unique,
                          parent_collection, index)
         self.params = params
 
     def get_observer_sed_component(self, component, mjd=None):
         if component != "this_object":
             raise RuntimeError("Unknown SED component: %s", component)
-        sed_path = self.params.sed_path
-        if not os.path.isfile(sed_path):
+        sed_file = self.params.sed_file
+        if not os.path.isfile(sed_file):
             # Try to find this file under $SIMS_SED_LIBRARY_DIR.
-            sed_path = os.path.join(os.environ['SIMS_SED_LIBRARY_DIR'],
-                                    sed_path)
-            if not os.path.isfile(sed_path):
-                raise FileNotFoundError(f"SED file {self.params.sed_path} "
+            sed_file = os.path.join(os.environ['SIMS_SED_LIBRARY_DIR'],
+                                    sed_file)
+            if not os.path.isfile(sed_file):
+                raise FileNotFoundError(f"SED file {self.params.sed_file} "
                                         "not found.")
-        sed = galsim.SED(sed_path, wave_type='nm', flux_type='flambda')
-        sed = normalize_sed(sed, params.magnorm)
+        sed = galsim.SED(sed_file, wave_type='nm', flux_type='flambda')
+        sed = normalize_sed(sed, self.params.magnorm)
         return sed
 
     def get_gsobject_components(self, gsparams=None, rng=None):
@@ -57,9 +56,9 @@ class SatelliteStreakCollection(ObjectCollection):
         self.catalog = pd.read_parquet(catalog_file)
 
         # Fill the private attributes required by the base class.
-        self._ra = self.df0['ra'].to_numpy()
-        self._dec = self.df0['dec'].to_numpy()
-        self._id = self.df0['obj_id'].to_numpy()
+        self._ra = self.catalog['ra'].to_numpy()
+        self._dec = self.catalog['dec'].to_numpy()
+        self._id = self.catalog['obj_id'].to_numpy()
         self._sky_catalog = sky_catalog
         self._object_type_unique = object_type
         self._object_class = SatelliteStreakObject
@@ -71,7 +70,7 @@ class SatelliteStreakCollection(ObjectCollection):
 
     def __getitem__(self, index):
         params = self.catalog.iloc[index]
-        return SatelliteStreak(params, self, index)
+        return SatelliteStreakObject(params, self, index)
 
     def __len__(self):
         return len(self._ra)

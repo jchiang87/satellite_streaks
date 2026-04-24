@@ -1,10 +1,11 @@
 from .utils import object_type_config
-from .satellite_streaks import SatelliteStreakCollection
+from .satelliteStreaks import SatelliteStreakCollection
 
 __all__ = ("register_objects",)
 
 
 COLLECTION_CLASS_MAP = {"SatelliteStreakCollection": SatelliteStreakCollection}
+
 
 def register_objects(sky_catalog, object_type):
     config = object_type_config(sky_catalog, object_type)
